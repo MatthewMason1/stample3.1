@@ -1,0 +1,192 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<style>
+body {transition: opacity ease-in 0.2s;}
+body[unresolved] {opacity: 0; display: block; overflow: hidden; position: relative;}
+</style>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stample</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Zalando+Sans+Expanded:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+body {
+  background-color: #000000;
+  color: white;
+  font-family: 'Zalando Sans Expanded', sans-serif;
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.input-container {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 16px;
+  padding: 15px 20px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  width: 260px;
+}
+
+.input-container label {
+  display: block;
+  font-size: 14px;
+  margin-bottom: 6px;
+  color: #ccc;
+  font-weight: 600;
+}
+
+.input-container input {
+  width: 100%;
+  margin-bottom: 12px;
+  padding: 8px;
+  border-radius: 8px;
+  border: none;
+  background: #1f1f1f;
+  color: white;
+  outline: none;
+  font-size: 14px;
+  font-family: inherit;
+  transition: background 0.3s;
+}
+
+.input-container input[type="color"] {
+  height: 40px;
+  padding: 2px;
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+
+.input-container input:focus {
+  background: #2c2c2c;
+}
+
+.preview {
+  position: absolute;
+  top: 50%;
+  right: 250px;
+  transform: translateY(-50%);
+  text-align: center;
+}
+
+/* VIDEO PREVIEW */
+.album-cover {
+  width: 500px;
+  aspect-ratio: 16 / 9;
+  border-radius: 16px;
+  object-fit: cover;
+  background: #222;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.15);
+  transition: box-shadow 0.3s ease;
+  border: 0.5px solid #ffffff53;
+}
+
+.song-name {
+  font-size: 20px;
+  font-weight: 600;
+  margin-top: 14px;
+  letter-spacing: 0.5px;
+}
+
+.artist-name {
+  font-size: 15px;
+  font-weight: 500;
+  color: #ccc;
+  margin-top: 8px;
+}
+
+.release-year {
+  font-size: 13px;
+  font-weight: 400;
+  color: #999;
+  margin-top: 7px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="input-container">
+  <label>Upload Video (MP4):</label>
+  <input type="file" id="videoUpload" accept="video/mp4">
+
+  <label>Song Name:</label>
+  <input type="text" id="songName" placeholder="Enter song name">
+
+  <label>Artist Name:</label>
+  <input type="text" id="artistName" placeholder="Enter artist name">
+
+  <label>Release Year:</label>
+  <input type="text" id="releaseYear" placeholder="Enter release year">
+
+  <label>Outer Glow Color:</label>
+  <input type="color" id="glowColor" value="#ffffff">
+</div>
+
+<div class="preview">
+  <video id="albumPreview" class="album-cover" autoplay loop muted playsinline></video>
+
+  <div id="songPreview" class="song-name">Song Name</div>
+  <div id="artistPreview" class="artist-name">by Artist Name</div>
+  <div id="yearPreview" class="release-year">(2025)</div>
+</div>
+
+<script>
+const videoUpload = document.getElementById('videoUpload');
+const songNameInput = document.getElementById('songName');
+const artistNameInput = document.getElementById('artistName');
+const releaseYearInput = document.getElementById('releaseYear');
+const glowColorInput = document.getElementById('glowColor');
+
+const albumPreview = document.getElementById('albumPreview');
+const songPreview = document.getElementById('songPreview');
+const artistPreview = document.getElementById('artistPreview');
+const yearPreview = document.getElementById('yearPreview');
+
+/* VIDEO UPLOAD */
+videoUpload.addEventListener('change', (event) => {
+  const file = event.target.files[0];
+  if (file) {
+    const url = URL.createObjectURL(file);
+    albumPreview.src = url;
+    albumPreview.play();
+  }
+});
+
+/* TEXT UPDATES */
+songNameInput.addEventListener('input', () => {
+  songPreview.textContent = songNameInput.value || 'Song Name';
+});
+
+artistNameInput.addEventListener('input', () => {
+  artistPreview.textContent = artistNameInput.value
+    ? 'by ' + artistNameInput.value
+    : 'by Artist Name';
+});
+
+releaseYearInput.addEventListener('input', () => {
+  yearPreview.textContent = releaseYearInput.value || '(2025)';
+});
+
+/* GLOW EFFECT */
+glowColorInput.addEventListener('input', () => {
+  const color = glowColorInput.value;
+  albumPreview.style.boxShadow = `0 0 40px 5px ${color}55`;
+});
+</script>
+
+</body>
+</html>
+
